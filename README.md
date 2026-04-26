@@ -47,21 +47,7 @@ pip install networkx
 
 ## File Preparation
 
-Place the tracker file into the Ultralytics tracker directory.
-
-For example:
-
-```text
-ultralytics/
-└── trackers/
-    ├── worm_sort.py
-    ├── bot_sort.py
-    ├── byte_tracker.py
-    ├── basetrack.py
-    └── utils/
-```
-
-Then prepare a tracker configuration file, for example:
+download WormSort Program and prepare a tracker configuration file, for example:
 
 ```text
 wormsort.yaml
@@ -231,22 +217,5 @@ min_skeleton_points: 5       # Minimum valid skeleton points (extraction fails b
 3. If masks are not available, the tracker can still use box-level motion cues, but shape-based matching will be weakened.
 4. The tracker should be used with `persist=True` when processing videos frame by frame.
 5. The `tracker="wormsort.yaml"` argument tells YOLO to use the WormSort tracker configuration.
-
-
-## Minimal Demo
-
-```python
-from ultralytics import YOLO
-
-model = YOLO("weight/best.pt")
-
-model.track(
-    source="video/input.mp4",
-    tracker="wormsort.yaml",
-    conf=0.1,
-    iou=0.3,
-    save=True
-)
-```
 
 ---
