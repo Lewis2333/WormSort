@@ -180,30 +180,46 @@ runs/wormsort/track_result/
 Create a file named `wormsort.yaml`:
 
 ```yaml
+# Usage: Place this file at ultralytics/cfg/trackers/wormsort.yaml
+#        Then call model.track(source, tracker="wormsort.yaml")
+
 tracker_type: wormsort
 
-track_high_thresh: 0.25
-track_low_thresh: 0.05
-new_track_thresh: 0.25
-track_buffer: 30
-match_thresh: 0.8
+# ── Basic tracking parameters (consistent with BoT-SORT/ByteTrack) ──
+track_high_thresh: 0.4       # High-confidence detection threshold
+track_low_thresh: 0.1        # Low-confidence detection threshold (ByteTrack second stage)
+new_track_thresh: 0.7        # Minimum score for new track initialization
+track_buffer: 30             # Frame retention for lost tracks
+match_thresh: 0.7            # Association threshold for the first matching stage
 
-w_iou: 0.6
-w_mid: 0.1
-w_curv: 0.2
-w_len: 0.1
+# ── Inherited BoT-SORT parameters ──
+fuse_score: True             # Whether to fuse detection confidence scores
+gmc_method: sparseOptFlow    # Global motion compensation method
+proximity_thresh: 0.5        # ReID proximity threshold
+appearance_thresh: 0.25      # ReID appearance similarity threshold
+with_reid: False             # ReID disabled for worm scenarios
 
-alpha_update: 0.7
-alpha_reactivate: 0.9
 
-ukf_q_pos: 4.0
-ukf_q_vel: 2.0
-ukf_q_theta: 0.3
-ukf_q_omega: 0.1
-ukf_r_pos: 2.0
+# ── Four-modal fusion weights (sum must equal 1.0) ──
+w_iou: 0.6                   # Weight for IoU spatial overlap
+w_mid: 0.1                   # Weight for skeleton midpoint distance (UKF prediction)
+w_curv: 0.2                  # Weight for skeleton curvature similarity
+w_len: 0.1                   # Weight for skeleton length consistency
 
-curvature_samples: 10
-min_skeleton_points: 5
+# ── EMA smoothing coefficients ──
+alpha_update: 0.7            # EMA alpha for normal updates (higher = more trust in new data)
+alpha_reactivate: 0.9        # EMA alpha for track reactivation (higher trust in new data after recovery)
+
+# ── UKF (CTRV motion model) parameters ──
+ukf_q_pos: 4.0               # Process noise: position (pixel²)
+ukf_q_vel: 2.0               # Process noise: velocity
+ukf_q_theta: 0.3             # Process noise: heading angle (rad²)
+ukf_q_omega: 0.1             # Process noise: angular velocity
+ukf_r_pos: 2.0               # Observation noise: position (skeleton midpoint extraction precision)
+
+# ── Skeleton feature configuration ──
+curvature_samples: 10        # Sampling points for curvature calculation
+min_skeleton_points: 5       # Minimum valid skeleton points (extraction fails below this threshold)
 ```
 
 ---
