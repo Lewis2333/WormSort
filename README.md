@@ -1,6 +1,6 @@
-# WormSort
+# Elegants-Sort
 
-WormSort is a YOLO-compatible multi-object tracking module designed for **C. elegans worm tracking** in microscopic videos.
+Elegants-Sort is a YOLO-compatible multi-object tracking module designed for **C. elegans worm tracking** in microscopic videos.
 
 It extends the standard tracking pipeline by incorporating worm-specific motion and shape cues, including bounding-box IoU, midpoint motion, skeleton curvature, and skeleton length.
 
@@ -47,7 +47,7 @@ pip install networkx
 
 ## File Preparation
 
-download WormSort Program and prepare a tracker configuration file, for example:
+download Elegants-Sort Program and prepare a tracker configuration file, for example:
 
 ```text
 wormsort.yaml
@@ -69,7 +69,7 @@ A typical project structure can be:
 
 ## Basic Usage
 
-You can call WormSort directly through YOLO:
+You can call Elegants-Sort directly through YOLO:
 
 ```python
 from ultralytics import YOLO
@@ -212,10 +212,10 @@ min_skeleton_points: 5       # Minimum valid skeleton points (extraction fails b
 
 ## Important Notes
 
-1. WormSort is designed for YOLO models with segmentation masks.
-2. If masks are available, WormSort extracts worm skeleton features from the instance masks.
+1. Elegants-Sort is designed for YOLO models with segmentation masks.
+2. If masks are available, Elegants-Sort extracts worm skeleton features from the instance masks.
 3. If masks are not available, the tracker can still use box-level motion cues, but shape-based matching will be weakened.
 4. The tracker should be used with `persist=True` when processing videos frame by frame.
-5. The `tracker="wormsort.yaml"` argument tells YOLO to use the WormSort tracker configuration.
+5. The `tracker="wormsort.yaml"` argument tells YOLO to use the Elegants-Sort tracker configuration.
 
 ---
